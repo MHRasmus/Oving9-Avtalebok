@@ -9,9 +9,9 @@ class Avtalebok:
         self.varighet = varighet
 
     def __str__(self):
-        return f"Valgt avtale:\nTittel: {self.tittel}\nSted: {self.tittel}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}"
+        return f"\n***Valgt avtale***\nTittel: {self.tittel}\nSted: {self.sted}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}"
     def __repr__(self):
-        return f"Valgt avtale:\nTittel: {self.tittel},Sted: {self.tittel},Starttidspunkt: {self.starttidspunkt},Varighet: {self.varighet}"
+        return f"Valgt avtale:\nTittel: {self.tittel},Sted: {self.sted},Starttidspunkt: {self.starttidspunkt},Varighet: {self.varighet}"
 
 
 
