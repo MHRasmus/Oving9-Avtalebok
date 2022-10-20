@@ -39,13 +39,12 @@ def ny_avtale():
         lag_avtale = input("Lag ny avtale? [Y/N]: ")
 
 #Funksjon som skriver ut index med tilhørende avtale
-def print_avtale(Overskrift="Avtale tilhørende indexen"):
+def print_avtale(Overskrift="Gjeldende avtale"):
     for x in avtaleindex_liste:
-        print(f"""\n***Index: {x}***\n{Overskrift}:{avtale_dict[x]}""")
+        print(f"""\n{Overskrift.upper()}\n***Index {x}***{avtale_dict[x]}""")
 
 
-ny_avtale()
-print_avtale()
+
 
 
 
