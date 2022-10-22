@@ -44,14 +44,36 @@ def print_avtale(Overskrift="Gjeldende avtale"):
         print(f"""\n{Overskrift.upper()}\n***Index {x}***{avtale_dict[x]}""")
 
 
+# Funksjon som lagrer en dictionary som en tekstfil
+def lagrer_dict(navn_dictionary):
+    try:
+        with open("avtalebok.txt", "w", encoding="UTF8") as fila:
+            for nokkel in navn_dictionary:
+                avtale = navn_dictionary[nokkel]
+                fila.write(f"{avtale.tittel};{avtale.sted};{avtale.starttidspunkt};{avtale.varighet}\n")
+                
+    except:
+        print("Feil har oppstått")
 
 
-
-
-
-
-
-
-
-
+# Funksjon som henter avtaleboken fra tekstfil
+def henter_avtalebok(navn_dictionary):
+    try:
+        with open("avtalebok.txt", "r", encoding="UTF8") as fila:
+            for linje in fila:
+                linje_liste = linje.split(";")
+                for element in linje_liste:
+                    avtale = Avtalebok(linje_liste[0])
+                    avtale.tittel = linje_liste[0]
+                    avtale.sted = linje_liste[1]
+                    avtale.starttidspunkt = datetime.fromisoformat(linje_liste[2])
+                    avtale.varighet = int(linje_liste[3])
+                navn_dictionary[linje_liste[0]] = avtale
+            
+    except ZeroDivisionError:
+        print("Fila: avtalebok.txt er tom")
+    except FileNotFoundError:
+        print("Fant ikke avtalebok.txt")
+    except:
+        print("Feil har oppstått")
 
