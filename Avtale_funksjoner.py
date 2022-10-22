@@ -56,7 +56,7 @@ def lagrer_dict(navn_dictionary):
         print("Feil har oppstått")
 
 
-# Funksjon som henter avtaleboken fra tekstfil
+# Funksjon som lager en dictonary fra en tekstfil
 def henter_avtalebok(navn_dictionary):
     try:
         with open("avtalebok.txt", "r", encoding="UTF8") as fila:
@@ -76,4 +76,28 @@ def henter_avtalebok(navn_dictionary):
         print("Fant ikke avtalebok.txt")
     except:
         print("Feil har oppstått")
+
+
+# Funksjon som finner avtaler på en gitt dato
+def avtale_dato(navn_dictionary,navn_returnert_dictionary,dato):
+    for tittel in navn_dictionary:
+        avtale = navn_dictionary[tittel]
+        avtale_dato = str(avtale.starttidspunkt)
+        avtale_dato_liste = avtale_dato.split(" ")
+        for index in avtale_dato_liste:
+            if dato == avtale_dato_liste[0]:
+                navn_returnert_dictionary[tittel] = avtale    
+    return navn_returnert_dictionary
+
+
+# Funksjon som leter etter titler til avtaler i en gitt streng
+def avtale_sok(navn_dictionary,navn_returnert_dictionary, streng):
+    for tittel in navn_dictionary:
+        avtale = navn_dictionary[tittel]
+        tittel_lower = tittel.lower()
+        streng_lower = streng.lower()
+        if streng_lower.find(tittel_lower) >= 0:
+            navn_returnert_dictionary[tittel] = avtale
+    return navn_returnert_dictionary
+
 
