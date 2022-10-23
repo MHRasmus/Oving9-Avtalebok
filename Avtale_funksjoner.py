@@ -2,11 +2,7 @@ from Avtale_klasse import Avtalebok
 from datetime import datetime
 
 
-
-#Definerer funksjon for å lage ny avtale
-avtale_dict = dict()
-avtaleindex_liste = []
-def ny_avtale():
+def ny_avtale(avtale_dict, avtaleindex_liste):
     #Bruker skriver inn avtaledeljer
     valgt_tittel = str(input("Skriv inn tittel: "))
     valgt_sted = str(input("Skriv inn sted: "))
@@ -38,7 +34,7 @@ def ny_avtale():
 
 
 #Funksjon som skriver ut index med tilhørende avtale
-def print_avtale(Overskrift="Gjeldende avtale"):
+def print_avtale(avtale_dict, avtaleindex_liste, Overskrift="Gjeldende avtale",):
     for x in avtaleindex_liste:
         print(f"""\n{Overskrift.upper()}\n***Index, "{x}"***{avtale_dict[x]}""")
 
