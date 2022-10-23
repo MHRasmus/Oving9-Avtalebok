@@ -14,5 +14,3 @@ print_avtaler = input("Se lagrede avtaler? [Y/N]: ")
 while print_avtaler == "Y":
     af.print_avtale()
     break
-
-
