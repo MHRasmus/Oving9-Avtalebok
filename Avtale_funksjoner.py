@@ -2,7 +2,7 @@ from Avtale_klasse import Avtalebok
 from datetime import datetime
 
 
-def ny_avtale(avtale_dict, avtaleindex_liste):
+def ny_avtale(avtale_dict):
     #Bruker skriver inn avtaledeljer
     valgt_tittel = str(input("Skriv inn tittel: "))
     valgt_sted = str(input("Skriv inn sted: "))
@@ -28,21 +28,51 @@ def ny_avtale(avtale_dict, avtaleindex_liste):
     #Lager dictionary med valgte data
     avtale_dict[valgt_tittel] = Avtalebok(valgt_tittel,valgt_sted,valgt_starttidspunkt,valgt_varighet)
 
-    #Legger keys inn i en liste
-    avtaleindex_liste.append(valgt_tittel)
+    # Printer ut avtalen som er blitt opprettet
     print(f"""{"-"*70}\nAvtalen din har blitt opprettet:{avtale_dict[valgt_tittel]}\n{"-"*70}""")
 
 
-#Funksjon som skriver ut index med tilhørende avtale
-def print_avtale(avtale_dict, avtaleindex_liste, Overskrift="Gjeldende avtale",):
-    for x in avtaleindex_liste:
+# Funksjon for redigering av eksisterende avtaler
+def rediger_avtale(avtale_dict, valgt_tittel):
+    # Bruker skriver inn avtaledeljer
+    valgt_sted = str(input("Skriv inn sted: "))
+
+    # Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
+    while True:
+        try:
+            valgt_starttidspunkt = datetime.strptime(input("Skriv inn starttidspunkt(ÅÅÅÅ-MM-DD TT:MM): "),
+                                                     "%Y-%m-%d %H:%M")
+            break
+        except ValueError:
+            print("***Feil format på tidspunkt***")
+            continue
+
+    # Sjekker om brukervalgt varighet er i gyldig format (int)
+    while True:
+        try:
+            valgt_varighet = int(input("Skriv inn varighet i hele minutter: "))
+            break
+        except ValueError:
+            print("Feil format på varighet")
+            continue
+
+    # Lager dictionary med valgte data
+    avtale_dict[valgt_tittel] = Avtalebok(valgt_tittel, valgt_sted, valgt_starttidspunkt, valgt_varighet)
+
+    # Printer ut avtalen som er blitt opprettet
+    print(f"""{"-" * 70}\nAvtalen din har blitt redigert:{avtale_dict[valgt_tittel]}\n{"-" * 70}""")
+
+
+# Funksjon som skriver ut index med tilhørende avtale
+def print_avtale(avtale_dict, Overskrift="Gjeldende avtale",):
+    for x in avtale_dict:
         print(f"""\n{Overskrift.upper()}\n***Index, "{x}"***{avtale_dict[x]}""")
 
 
 # Funksjon som lagrer en dictionary som en tekstfil
-def lagrer_dict(navn_dictionary):
+def lagrer_dict(navn_dictionary, fil):
     try:
-        with open("avtalebok.txt", "w", encoding="UTF8") as fila:
+        with open(fil, "w", encoding="UTF8") as fila:
             for nokkel in navn_dictionary:
                 avtale = navn_dictionary[nokkel]
                 fila.write(f"{avtale.tittel};{avtale.sted};{avtale.starttidspunkt};{avtale.varighet}\n")
@@ -52,9 +82,9 @@ def lagrer_dict(navn_dictionary):
 
 
 # Funksjon som lager en dictonary fra en tekstfil
-def henter_avtalebok(navn_dictionary):
+def henter_avtalebok(navn_dictionary, fil):
     try:
-        with open("avtalebok.txt", "r", encoding="UTF8") as fila:
+        with open(fil, "r", encoding="UTF8") as fila:
             for linje in fila:
                 linje_liste = linje.split(";")
                 for element in linje_liste:
@@ -96,3 +126,19 @@ def avtale_sok(navn_dictionary,navn_returnert_dictionary, streng):
     return navn_returnert_dictionary
 
 
+# Funksjon for menyvalg
+def menyvalg():
+    while True:
+        try:
+            print(
+                f"\nValgmuligheter: \n1 = Lese inn avtaler fra fil \n2 = Skrive avtalene til fil "
+                f"\n3 = Legge til en ny avtale \n4 = Skrive ut alle avtalene \n5 = Slett en avtale "
+                f"\n6 = Rediger en avtale \n9 = Avslutte")
+            valg_bruker = int(input("Skriv inn tallet som stemmer overens med ønsket valg: "))
+            if valg_bruker in [1, 2, 3, 4, 5, 6, 9]:
+                break
+            else:
+                print("Dette tallet stemmer ikke overens med noen av valgene, velg på nytt.")
+        except ValueError:
+            print("Du må skrive inn et tall.")
+    return valg_bruker

@@ -1,21 +1,37 @@
-import Avtale_funksjoner as af
 
-#Definerer funksjon for å lage ny avtale
-avtale_dict = dict()
-avtaleindex_liste = []
+import Avtale_funksjoner as Af
 
-#Lager et menyvalg for å kjøre gjennom funksjonen
-#og ha mulighet til å lagre flere avtaler samtidig
-lag_avtale = input("Lag ny avtale? [Y/N]: ")
-while lag_avtale == "Y":
-    af.ny_avtale(avtale_dict, avtaleindex_liste)
-    lag_avtale = input("Lag ny avtale? [Y/N]: ")
+avtalebok_dict = dict()
 
-
-#Lager et menyvalg for om man vil printe ut de lagrete avtalene
-print_avtaler = input("Se lagrede avtaler? [Y/N]: ")
-while print_avtaler == "Y":
-    af.print_avtale(avtale_dict, avtaleindex_liste)
-    break
-
-
+valg = Af.menyvalg()
+while valg != 9:
+    if valg == 1:
+        fil = input("Skriv inn navnet på filen som skall leses inn: ")
+        Af.henter_avtalebok(avtalebok_dict, fil)
+    elif valg == 2:
+        fil = input("Skriv inn navnet på filen som avtalene skall skrives til: ")
+        Af.lagrer_dict(avtalebok_dict, fil)
+    elif valg == 3:
+        Af.ny_avtale(avtalebok_dict)
+    elif valg == 4:
+        Af.print_avtale(avtalebok_dict)
+    elif valg == 5:
+        Af.print_avtale(avtalebok_dict)
+        try:
+            print("\nFor å komme ut av denne menyen uten å slette noe. "
+                  "Skriv noe som ikke er navnet til noen av avtalene.")
+            slett = input("Skriv inn navnet på avtalen du vill slette: ")
+            avtalebok_dict.pop(slett)
+        except KeyError:
+            print("Finner ikke en avtale med det navnet.")
+    elif valg == 6:
+        Af.print_avtale(avtalebok_dict)
+        try:
+            rediger = input("\nSkriv inn navnet på avtalen du vill redigere: ")
+            print(f"{avtalebok_dict[rediger]}\n")
+            Af.rediger_avtale(avtalebok_dict, rediger)
+        except KeyError:
+            print("Finner ikke en avtale med det navnet.")
+    else:
+        pass
+    valg = Af.menyvalg()
