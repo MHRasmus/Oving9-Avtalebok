@@ -10,7 +10,7 @@ def ny_avtale(avtale_dict):
     #Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
     while True:
         try:
-            valgt_starttidspunkt = datetime.strptime(input("Skriv inn starttidspunkt(ÅÅÅÅ-MM-DD TT:MM): "), "%Y-%m-%d %H:%M")
+            valgt_starttidspunkt = datetime.strptime(input("Skriv inn starttidspunkt(DD-MM-ÅÅÅÅ TT:MM): "), "%d-%m-%Y %H:%M")
             break
         except ValueError:
             print("***Feil format på tidspunkt***")
