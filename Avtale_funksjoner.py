@@ -4,8 +4,8 @@ from datetime import datetime
 
 def ny_avtale(avtale_dict):
     #Bruker skriver inn avtaledeljer
-    valgt_tittel = str(input("Skriv inn tittel: "))
-    valgt_sted = str(input("Skriv inn sted: "))
+    valgt_tittel = input("Skriv inn tittel: ")
+    valgt_sted = input("Skriv inn sted: ")
 
     #Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
     while True:
@@ -22,7 +22,7 @@ def ny_avtale(avtale_dict):
             valgt_varighet = int(input("Skriv inn varighet i hele minutter: "))
             break
         except ValueError:
-            print("Feil format på varighet")
+            print("Feil format på varighet, skriv i hele minutter")
             continue
 
     #Lager dictionary med valgte data
@@ -37,11 +37,11 @@ def rediger_avtale(avtale_dict, valgt_tittel):
     # Bruker skriver inn avtaledeljer
     valgt_sted = str(input("Skriv inn sted: "))
 
-    # Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
+    # Sjekker om brukervalgt tidspunkt er i gyldig format (DD-MM-ÅÅÅÅ TT:MM)
     while True:
         try:
-            valgt_starttidspunkt = datetime.strptime(input("Skriv inn starttidspunkt(ÅÅÅÅ-MM-DD TT:MM): "),
-                                                     "%Y-%m-%d %H:%M")
+            valgt_starttidspunkt = datetime.strptime(input("Skriv inn starttidspunkt(DD-MM-ÅÅÅÅ TT:MM): "),
+                                                     "%d-%m-%Y %H:%M")
             break
         except ValueError:
             print("***Feil format på tidspunkt***")
@@ -64,7 +64,7 @@ def rediger_avtale(avtale_dict, valgt_tittel):
 
 
 # Funksjon som skriver ut index med tilhørende avtale
-def print_avtale(avtale_dict, Overskrift="Gjeldende avtale",):
+def print_avtale(avtale_dict, Overskrift="Valgt avtale",):
     for x in avtale_dict:
         print(f"""\n{Overskrift.upper()}\n***Index, "{x}"***{avtale_dict[x]}""")
 
@@ -96,9 +96,9 @@ def henter_avtalebok(navn_dictionary, fil):
                 navn_dictionary[linje_liste[0]] = avtale
             
     except ZeroDivisionError:
-        print("Fila: avtalebok.txt er tom")
+        print("Fila: dokumentet er tom")
     except FileNotFoundError:
-        print("Fant ikke avtalebok.txt")
+        print("Fant ikke dokumentet")
     except:
         print("Feil har oppstått")
 
@@ -131,9 +131,9 @@ def menyvalg():
     while True:
         try:
             print(
-                f"\nValgmuligheter: \n1 = Lese inn avtaler fra fil \n2 = Skrive avtalene til fil "
-                f"\n3 = Legge til en ny avtale \n4 = Skrive ut alle avtalene \n5 = Slett en avtale "
-                f"\n6 = Rediger en avtale \n9 = Avslutte")
+                f"\nValgmuligheter: \n1 = Lese inn avtaler fra fil \n2 = Legge til en ny avtale "
+                f"\n3 = Skrive ut alle avtalene \n4 = Slett en avtale \n5 = Rediger en avtale "
+                f"\n6 = Lagre avtalene i en fil \n9 = Avslutte")
             valg_bruker = int(input("Skriv inn tallet som stemmer overens med ønsket valg: "))
             if valg_bruker in [1, 2, 3, 4, 5, 6, 9]:
                 break
