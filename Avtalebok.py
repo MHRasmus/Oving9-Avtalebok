@@ -3,12 +3,15 @@ import Avtale_funksjoner as Af
 
 fil = "Avtalebok.txt"
 avtalebok_dict = dict()
+fil_hentet = False
 
 valg = Af.menyvalg()
 while valg != 9:
+    fil_hentet_status = fil_hentet
     if valg == 1:
         #fil = input("Skriv inn navnet på filen som du vil lese inn avtaler fra: ")
         Af.henter_avtalebok(avtalebok_dict, fil)
+        fil_hentet = True
     elif valg == 2:
         Af.ny_avtale(avtalebok_dict)
     elif valg == 3:
@@ -34,6 +37,9 @@ while valg != 9:
             print("Finner ikke en avtale med det navnet.")
     elif valg == 6:
         #fil = input("Skriv inn navnet på filen som avtalene skal lagres i #NB! husk .txt#: ")
+        if fil_hentet_status == False:
+            Af.henter_avtalebok(avtalebok_dict, fil)
+            fil_hentet = True
         Af.lagrer_dict(avtalebok_dict, fil)
     else:
         pass
