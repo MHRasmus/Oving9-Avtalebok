@@ -65,8 +65,10 @@ def rediger_avtale(avtale_dict, valgt_tittel):
 
 # Funksjon som skriver ut index med tilhørende avtale
 def print_avtale(avtale_dict, Overskrift="Valgt avtale",):
+    print(f"""\n{"-" * 70}""")
     for x in avtale_dict:
         print(f"""\n{Overskrift.upper()}\n***Index, "{x}"***{avtale_dict[x]}""")
+    print(f"""\n{"-" * 70}""")
 
 
 # Funksjon som lagrer en dictionary som en tekstfil

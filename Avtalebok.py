@@ -15,9 +15,7 @@ while valg != 9:
     elif valg == 2:
         Af.ny_avtale(avtalebok_dict)
     elif valg == 3:
-        print(f"""{"-" * 70}""")
         Af.print_avtale(avtalebok_dict)
-        print(f"""\n{"-" * 70}""")
     elif valg == 4:
         Af.print_avtale(avtalebok_dict)
         try:
