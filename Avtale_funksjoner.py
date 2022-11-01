@@ -1,4 +1,4 @@
-from Avtale_klasse import Avtalebok
+from Avtale_klasse import *
 from datetime import datetime
 
 
@@ -144,3 +144,67 @@ def menyvalg():
         except ValueError:
             print("Du må skrive inn et tall.")
     return valg_bruker
+
+
+def ny_kategori(kategori_dict):
+    # Bruker skriver inn kategorideljer
+    valgt_navn = input("Skriv inn navn: ")
+
+    while True:
+        try:
+            valgt_id = int(input("Skriv inn id: "))
+            break
+        except ValueError:
+            print("Id må være et gyldig tall")
+            continue
+
+    while True:
+        prioritet_list = ["Vanlig", "Viktig", "Svært viktig"]
+        try:
+            print(f"\nPrioritets valg: \n1 = Vanlig \n2 = Viktig \n3 = Svært viktig")
+            valgt_prioritet = int(input("Skriv inn tallet som stemmer overens med ønsket prioritet: "))
+            prioritet = prioritet_list[valgt_prioritet-1]
+            break
+        except ValueError:
+            print("Prioritet må være et gyldig tall")
+            continue
+
+    # Lager dictionary med valgte data
+    kategori_dict[valgt_id] = Kategori(valgt_id, valgt_navn, prioritet)
+
+
+# Funksjon som lager en tekstfil fra en dictonary med kategorier
+def lagrer_kategorier(navn_dictionary, fil):
+    try:
+        with open(fil, "w", encoding="UTF8") as fila:
+            for nokkel in navn_dictionary:
+                kategori = navn_dictionary[nokkel]
+                fila.write(f"{kategori.id};{kategori.navn};{kategori.prioritet}\n")
+
+    except:
+        print("Feil har oppstått")
+
+
+# Funksjon som lager en dictonary fra en tekstfil med kategorier
+def henter_kategorier(navn_dictionary, fil):
+    try:
+        with open(fil, "r", encoding="UTF8") as fila:
+            for linje in fila:
+                linje_liste = linje.strip().split(";")
+                id = int(linje_liste[0])
+                navn_dictionary[id] = Kategori(id, linje_liste[1], linje_liste[2])
+    except ZeroDivisionError:
+        print("Fila: dokumentet er tom")
+    except FileNotFoundError:
+        print("Fant ikke dokumentet")
+    except:
+        print("Feil har oppstått")
+
+
+# Funksjon som skriver ut index med tilhørende verdi/klasse
+def print_dictonary(navn_dictionary, overskrift=""):
+    print(f"""\n{"-" * 70}\n{overskrift}""")
+    for x in navn_dictionary:
+        print(f"""\n*** Index: {x} ***{navn_dictionary[x]}""")
+    print(f"""\n{"-" * 70}""")
+
