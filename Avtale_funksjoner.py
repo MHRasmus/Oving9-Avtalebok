@@ -208,3 +208,64 @@ def print_dictonary(navn_dictionary, overskrift=""):
         print(f"""\n*** Index: {x} ***{navn_dictionary[x]}""")
     print(f"""\n{"-" * 70}""")
 
+
+# Funksjon som leser inn nytt sted fra bruker
+def ny_sted(sted_dict):
+    # Id
+    while True:
+        try:
+            valgt_id = int(input("Skriv inn id: "))
+            break
+        except ValueError:
+            print("Id må være et gyldig tall")
+            continue
+    
+    # Navn
+    valgt_navn = input("Skriv inn navn: ")
+
+    # Adresse
+    valgt_gateadresse = input("Skriv inn gateadresse: ")
+    while True:
+        try:
+            valgt_postnummer = int(input("Skriv inn postnummer: "))
+            break
+        except ValueError:
+            print("Postnummer må være et gyldig tall")
+            continue
+    
+    valgt_poststed = input("Skriv inn poststed: ")
+    valgt_adresse = f"{valgt_gateadresse}, {valgt_postnummer} {valgt_poststed}"
+
+    # Lager dictionary med valgte data for sted
+    sted_dict[valgt_id] = Sted(valgt_id, valgt_navn, valgt_adresse)
+
+
+# Funksjon som lager en tekstfil fra en dictonary med kategorier
+def lagrer_sted(navn_dictionary, fil):
+    try:
+        with open(fil, "w", encoding="UTF8") as fila:
+            for nokkel in navn_dictionary:
+                sted = navn_dictionary[nokkel]
+                fila.write(f"{sted.id};{sted.navn};{sted.adresse}\n")
+
+    except:
+        print("Feil har oppstått")
+
+
+# Funksjon som lager en dictonary fra en tekstfil med steder
+def henter_sted(navn_dictionary, fil):
+    try:
+        with open(fil, "r", encoding="UTF8") as fila:
+            for linje in fila:
+                linje_liste = linje.strip().split(";")
+                id = int(linje_liste[0])
+                navn_dictionary[id] = Sted(id, linje_liste[1], linje_liste[2])
+    
+    except ZeroDivisionError:
+        print("Fila: dokumentet er tom")
+    except FileNotFoundError:
+        print("Fant ikke dokumentet")
+    except:
+        print("Feil har oppstått")
+
+
