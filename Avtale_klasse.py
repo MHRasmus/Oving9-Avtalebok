@@ -24,3 +24,14 @@ class Kategori:
     def __str__(self):
         return f"\nId: {self.id} \nNavn: {self.navn} \nPrioritet: {self.prioritet}"
 
+
+class Sted:
+    def __init__(self, id, navn, adresse):
+        self.id = id
+        self.navn = navn
+        self.adresse = adresse
+    
+    def __str__(self):
+        return f"\nId: {self.id}\nNavn: {self.navn}\nAdresse: {self.adresse}"
+
+
