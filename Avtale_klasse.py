@@ -7,9 +7,15 @@ class Avtalebok:
         self.sted = sted
         self.starttidspunkt = starttidspunkt
         self.varighet = varighet
+        self.kategori = list()
+
+    # lager en liste med katergorier:
+    def legg_til_kategori(self,kategori):
+        return self.kategori.append(kategori)
+
 
     def __str__(self):
-        return f"\nTittel: {self.tittel}\nSted: {self.sted}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}"
+        return f"\nTittel: {self.tittel}\nSted: {self.sted}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}\nKategori: {self.kategori}"
     def __repr__(self):
         return f"\nTittel: {self.tittel},Sted: {self.sted},Starttidspunkt: {self.starttidspunkt},Varighet: {self.varighet}"
 

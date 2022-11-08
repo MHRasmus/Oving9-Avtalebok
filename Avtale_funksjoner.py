@@ -72,18 +72,21 @@ def print_avtale(avtale_dict, Overskrift="Valgt avtale",):
 
 
 # Funksjon som lagrer en dictionary som en tekstfil
-def lagrer_dict(navn_dictionary, fil):
+def lagrer_dict(navn_dictionary,fil,kategori_liste,sted_obj):
     try:
         with open(fil, "w", encoding="UTF8") as fila:
             for nokkel in navn_dictionary:
                 avtale = navn_dictionary[nokkel]
-                fila.write(f"{avtale.tittel};{avtale.sted};{avtale.starttidspunkt};{avtale.varighet}\n")
+                katliste = kategori_liste
+                sted = sted_obj
+                fila.write(f"{avtale.tittel};{sted};{avtale.starttidspunkt};{avtale.varighet};{katliste}\n")
                 
     except:
         print("Feil har oppstått")
 
 
 # Funksjon som lager en dictonary fra en tekstfil
+#Laster først inn filene med kategorier og steder
 def henter_avtalebok(navn_dictionary, fil):
     try:
         with open(fil, "r", encoding="UTF8") as fila:
