@@ -72,22 +72,77 @@ def print_avtale(avtale_dict, Overskrift="Valgt avtale",):
 
 
 # Funksjon som lagrer en dictionary som en tekstfil
-def lagrer_dict(navn_dictionary,fil,kategori_liste,sted_obj):
+def lagrer_dict(navn_dictionary, fil, kategori_dict, kategori_fil, sted_dict, sted_fil):
+    #Lager en tekstfil med avtaler
     try:
         with open(fil, "w", encoding="UTF8") as fila:
             for nokkel in navn_dictionary:
                 avtale = navn_dictionary[nokkel]
-                katliste = kategori_liste
-                sted = sted_obj
-                fila.write(f"{avtale.tittel};{sted};{avtale.starttidspunkt};{avtale.varighet};{katliste}\n")
-                
+                #sted = sted_obj
+                fila.write(f"{avtale.tittel};{sted};{avtale.starttidspunkt};{avtale.varighet}")
+    except:
+        print("Feil har oppstått")
+
+    #Lager en teksfil med kategorier
+    try:
+        with open(kategori_fil, "w", encoding="UTF8") as katfil:
+            for key in kategori_dict:
+                kategori = kategori_dict[key]
+                katfil.write(f"{kategori.id};{kategori.navn};{kategori.prioritet}")
+    except:
+        print("Feil har oppstått")
+
+    #Lager tekstfil med steder
+    try:
+        with open(sted_fil, "w", encoding="UTF8") as stedfil:
+            for index in sted_dict:
+                kategori = sted_dict[index]
+                stedfil.write(f"{sted.id};{sted.navn};{sted.adresse}")
     except:
         print("Feil har oppstått")
 
 
+
 # Funksjon som lager en dictonary fra en tekstfil
 #Laster først inn filene med kategorier og steder
-def henter_avtalebok(navn_dictionary, fil):
+def henter_avtalebok(navn_dictionary,fil,kategori_dictionary,kategori_fil,sted_dictionary,sted_fil):
+    #Leser inn kategorier og lager dictionary
+    try:
+        with open(kategori_fil, "r", encoding="UTF8") as katfila:
+            for linje in katfila:
+                katlinje_liste = linje.split(";")
+                for element in katlinje_liste:
+                    kategori = Kategori(katlinje_liste[0])
+                    kategori.id = katlinje_liste[0]
+                    kategori.navn = katlinje_liste[1]
+                    kategori.prioritet = katlinje_liste[2]
+                kategori_dictionary[katlinje_liste[0]]= kategori
+    except ZeroDivisionError:
+        print("Fila: dokumentet er tom")
+    except FileNotFoundError:
+        print("Fant ikke dokumentet")
+    except:
+        print("Feil har oppstått")
+
+    #Leser inn steder og og lager dictionary
+    try:
+        with open(sted_fil, "r", encoding="UTF8") as stedfila:
+            for linje in stedfila:
+                stedlinje_liste = linje.split(";")
+                for element in stedlinje_liste:
+                    sted = Sted(stedlinje_liste[0])
+                    sted.id = stedlinje_liste[0]
+                    sted.navn = stedlinje_liste[1]
+                    sted.adresse = stedlinje_liste[2]
+                sted_dictionary[stedlinje_liste[0]]= sted
+    except ZeroDivisionError:
+        print("Fila: dokumentet er tom")
+    except FileNotFoundError:
+        print("Fant ikke dokumentet")
+    except:
+        print("Feil har oppstått")
+
+    #Leser inn avtaler fra fil og lager dictionary
     try:
         with open(fil, "r", encoding="UTF8") as fila:
             for linje in fila:
