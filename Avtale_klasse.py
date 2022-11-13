@@ -9,17 +9,14 @@ class Avtalebok:
         self.varighet = varighet
         self.kategori = list()
 
+
     # lager en liste med katergorier:
     def legg_til_kategori(self,kategori):
         return self.kategori.append(kategori)
-    #Returnerer sted objekt fra et gitt indeks
-    def steds_objekt(self,steds_dict,steds_liste):
-        sted_tall = self.sted
-        if sted_tall in steds_liste:
-            
+
 
     def __str__(self):
-        return f"\nTittel: {self.tittel}\nSted: {self.steds_objekt()}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}\nKategori: {self.kategori}"
+        return f"\nTittel: {self.tittel}\nSted: {self.sted_objekt}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}\nKategori: {self.kategori}"
     def __repr__(self):
         return f"\nTittel: {self.tittel},Sted: {self.sted},Starttidspunkt: {self.starttidspunkt},Varighet: {self.varighet}"
 
