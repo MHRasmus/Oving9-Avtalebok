@@ -106,43 +106,23 @@ def lagrer_dict(navn_dictionary, fil, kategori_dict, kategori_fil, sted_dict, st
 # Funksjon som lager en dictonary fra en tekstfil
 #Laster først inn filene med kategorier og steder
 def henter_avtalebok(navn_dictionary,fil,kategori_dictionary,kategori_fil,sted_dictionary,sted_fil):
-    #Leser inn kategorier og lager dictionary
+    #Henter kategori filer
     try:
-        with open(kategori_fil, "r", encoding="UTF8") as katfila:
-            for linje in katfila:
-                katlinje_liste = linje.split(";")
-                for element in katlinje_liste:
-                    kategori = Kategori(katlinje_liste[0])
-                    kategori.id = katlinje_liste[0]
-                    kategori.navn = katlinje_liste[1]
-                    kategori.prioritet = katlinje_liste[2]
-                kategori_dictionary[katlinje_liste[0]]= kategori
+        with open(kategori_fil,"r",encoding="UTF8") as kat_fil:
+            for k in kat_fil:
+                k_liste = k.split(";")
+                for e in k_liste:
+                    
+
     except ZeroDivisionError:
-        print("Fila: dokumentet er tom")
+        print("Kategori_Fila: dokumentet er tom")
     except FileNotFoundError:
-        print("Fant ikke dokumentet")
+        print("Fant ikke kategori dokumentet")
     except:
         print("Feil har oppstått")
 
-    #Leser inn steder og og lager dictionary
-    try:
-        with open(sted_fil, "r", encoding="UTF8") as stedfila:
-            for linje in stedfila:
-                stedlinje_liste = linje.split(";")
-                for element in stedlinje_liste:
-                    sted = Sted(stedlinje_liste[0])
-                    sted.id = stedlinje_liste[0]
-                    sted.navn = stedlinje_liste[1]
-                    sted.adresse = stedlinje_liste[2]
-                sted_dictionary[stedlinje_liste[0]]= sted
-    except ZeroDivisionError:
-        print("Fila: dokumentet er tom")
-    except FileNotFoundError:
-        print("Fant ikke dokumentet")
-    except:
-        print("Feil har oppstått")
 
-    #Leser inn avtaler fra fil og lager dictionary
+    #Leser inn avtaler fra avtale_fil og lager dictionary
     try:
         with open(fil, "r", encoding="UTF8") as fila:
             for linje in fila:
@@ -193,9 +173,11 @@ def menyvalg():
             print(
                 f"\nValgmuligheter: \n1 = Lese inn avtaler fra fil \n2 = Legge til en ny avtale "
                 f"\n3 = Skrive ut alle avtalene \n4 = Slett en avtale \n5 = Rediger en avtale "
-                f"\n6 = Lagre avtalene i en fil \n9 = Avslutte")
+                f"\n6 = Lagre avtalene i en fil \n7 = Legge til ny kategori \n8 = Legge til nytt sted"
+                f"\n9 = Avslutte"
+                f"\n10 = Lagre kategorier \n11 = Skriv ut kategorier \n12 = Lagre steder \n13 = Skrive ut steder  ")
             valg_bruker = int(input("Skriv inn tallet som stemmer overens med ønsket valg: "))
-            if valg_bruker in [1, 2, 3, 4, 5, 6, 9]:
+            if valg_bruker in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ,13]:
                 break
             else:
                 print("Dette tallet stemmer ikke overens med noen av valgene, velg på nytt.")
@@ -204,13 +186,14 @@ def menyvalg():
     return valg_bruker
 
 
-def ny_kategori(kategori_dict):
+def ny_kategori(kategori_dict,kategori_liste):
     # Bruker skriver inn kategorideljer
     valgt_navn = input("Skriv inn navn: ")
 
     while True:
         try:
-            valgt_id = int(input("Skriv inn id: "))
+            valgt_id = int(input("Skriv inn id i heltall: "))
+            kategori_liste.append(valgt_id)
             break
         except ValueError:
             print("Id må være et gyldig tall")
@@ -226,10 +209,9 @@ def ny_kategori(kategori_dict):
         except ValueError:
             print("Prioritet må være et gyldig tall")
             continue
-
     # Lager dictionary med valgte data
     kategori_dict[valgt_id] = Kategori(valgt_id, valgt_navn, prioritet)
-
+    return kategori_dict
 
 # Funksjon som lager en tekstfil fra en dictonary med kategorier
 def lagrer_kategorier(navn_dictionary, fil):
@@ -244,13 +226,15 @@ def lagrer_kategorier(navn_dictionary, fil):
 
 
 # Funksjon som lager en dictonary fra en tekstfil med kategorier
-def henter_kategorier(navn_dictionary, fil):
+def henter_kategorier(navn_dictionary,fil,kategori_liste):
     try:
         with open(fil, "r", encoding="UTF8") as fila:
             for linje in fila:
                 linje_liste = linje.strip().split(";")
                 id = int(linje_liste[0])
+                kategori_liste.append(int(linje_liste[0]))
                 navn_dictionary[id] = Kategori(id, linje_liste[1], linje_liste[2])
+        return navn_dictionary,kategori_liste
     except ZeroDivisionError:
         print("Fila: dokumentet er tom")
     except FileNotFoundError:
@@ -268,16 +252,17 @@ def print_dictonary(navn_dictionary, overskrift=""):
 
 
 # Funksjon som leser inn nytt sted fra bruker
-def ny_sted(sted_dict):
+def ny_sted(sted_dict,sted_liste):
     # Id
     while True:
         try:
             valgt_id = int(input("Skriv inn id: "))
+            sted_liste.append(valgt_id)
             break
         except ValueError:
             print("Id må være et gyldig tall")
             continue
-    
+
     # Navn
     valgt_navn = input("Skriv inn navn: ")
 
@@ -311,14 +296,15 @@ def lagrer_sted(navn_dictionary, fil):
 
 
 # Funksjon som lager en dictonary fra en tekstfil med steder
-def henter_sted(navn_dictionary, fil):
+def henter_sted(navn_dictionary,fil,sted_liste):
     try:
         with open(fil, "r", encoding="UTF8") as fila:
             for linje in fila:
                 linje_liste = linje.strip().split(";")
                 id = int(linje_liste[0])
                 navn_dictionary[id] = Sted(id, linje_liste[1], linje_liste[2])
-    
+                sted_liste.append(id)
+        return navn_dictionary
     except ZeroDivisionError:
         print("Fila: dokumentet er tom")
     except FileNotFoundError:
