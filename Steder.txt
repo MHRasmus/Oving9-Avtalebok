@@ -1,1 +1,3 @@
-1;Led;Uis-veien 1;3303 Stavanger
+1;Led;Uis-veien 1
+2;Hjemme;shfig 2
+3;Borte;Borteveien 3, 666 Hell

@@ -10,14 +10,15 @@ def ny_avtale(avtale_dict,sted_dict,sted_liste):
 
     #Printer først eksisterende steder:
     s_liste = list()
-    for x in sted_dict:
-        s_liste.append(x[0])
+    for x in sted_dict.keys():
+        s_liste.append(int(x))
     print_dictonary(sted_dict,"Eksisterende steder:")
-    innskrevet_sted = input(str(f"Skriv inn id til ønsket sted eller legg til nytt sted ved å skrive et annet tall"))
+    innskrevet_sted = int(input("Skriv inn id til ønsket sted eller legg til nytt sted ved å skrive et annet tall: "))
     if innskrevet_sted in s_liste:
         valgt_sted = innskrevet_sted
     else:
         ny_sted(sted_dict,sted_liste)
+        valgt_sted = sted_liste[-1]
 
 
     #Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
@@ -270,7 +271,7 @@ def ny_sted(sted_dict,sted_liste):
 
     # Lager dictionary med valgte data for sted
     sted_dict[valgt_id] = Sted(valgt_id, valgt_navn, valgt_adresse)
-
+    return sted_dict,sted_liste
 
 # Funksjon som lager en tekstfil fra en dictonary med kategorier
 def lagrer_sted(navn_dictionary, fil):
