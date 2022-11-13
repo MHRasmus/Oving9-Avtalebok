@@ -2,10 +2,23 @@ from Avtale_klasse import *
 from datetime import datetime
 
 
-def ny_avtale(avtale_dict):
+def ny_avtale(avtale_dict,sted_dict,sted_liste):
     #Bruker skriver inn avtaledeljer
     valgt_tittel = input("Skriv inn tittel: ")
-    valgt_sted = input("Skriv inn sted: ")
+
+    #Lar brukeren skrive inn sted
+
+    #Printer først eksisterende steder:
+    s_liste = list()
+    for x in sted_dict:
+        s_liste.append(x[0])
+    print_dictonary(sted_dict,"Eksisterende steder:")
+    innskrevet_sted = input(str(f"Skriv inn id til ønsket sted eller legg til nytt sted ved å skrive et annet tall"))
+    if innskrevet_sted in s_liste:
+        valgt_sted = innskrevet_sted
+    else:
+        ny_sted(sted_dict,sted_liste)
+
 
     #Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
     while True:
@@ -73,31 +86,17 @@ def print_avtale(avtale_dict, Overskrift="Valgt avtale",):
 
 # Funksjon som lagrer en dictionary som en tekstfil
 def lagrer_dict(navn_dictionary, fil, kategori_dict, kategori_fil, sted_dict, sted_fil):
+    # Lager en tekstfil med kategorier
+    lagrer_kategorier(kategori_dict, kategori_fil)
+
+    # Lager en tekstfil med steder
+    lagrer_sted(sted_dict, sted_fil)
     #Lager en tekstfil med avtaler
     try:
         with open(fil, "w", encoding="UTF8") as fila:
             for nokkel in navn_dictionary:
                 avtale = navn_dictionary[nokkel]
-                #sted = sted_obj
-                fila.write(f"{avtale.tittel};{sted};{avtale.starttidspunkt};{avtale.varighet}")
-    except:
-        print("Feil har oppstått")
-
-    #Lager en teksfil med kategorier
-    try:
-        with open(kategori_fil, "w", encoding="UTF8") as katfil:
-            for key in kategori_dict:
-                kategori = kategori_dict[key]
-                katfil.write(f"{kategori.id};{kategori.navn};{kategori.prioritet}")
-    except:
-        print("Feil har oppstått")
-
-    #Lager tekstfil med steder
-    try:
-        with open(sted_fil, "w", encoding="UTF8") as stedfil:
-            for index in sted_dict:
-                kategori = sted_dict[index]
-                stedfil.write(f"{sted.id};{sted.navn};{sted.adresse}")
+                fila.write(f"{avtale.tittel};{avtale.sted};{avtale.starttidspunkt};{avtale.varighet}")
     except:
         print("Feil har oppstått")
 
@@ -105,22 +104,12 @@ def lagrer_dict(navn_dictionary, fil, kategori_dict, kategori_fil, sted_dict, st
 
 # Funksjon som lager en dictonary fra en tekstfil
 #Laster først inn filene med kategorier og steder
-def henter_avtalebok(navn_dictionary,fil,kategori_dictionary,kategori_fil,sted_dictionary,sted_fil):
-    #Henter kategori filer
-    try:
-        with open(kategori_fil,"r",encoding="UTF8") as kat_fil:
-            for k in kat_fil:
-                k_liste = k.split(";")
-                for e in k_liste:
-                    
+def henter_avtalebok(navn_dictionary,fil,kategori_dictionary,kategori_fil,kategori_liste,sted_dictionary,sted_fil,sted_liste):
+    #Henter kategori fil
+    henter_kategorier(kategori_dictionary,kategori_fil,kategori_liste)
 
-    except ZeroDivisionError:
-        print("Kategori_Fila: dokumentet er tom")
-    except FileNotFoundError:
-        print("Fant ikke kategori dokumentet")
-    except:
-        print("Feil har oppstått")
-
+    #Henter sted fil
+    henter_sted(sted_dictionary,sted_fil,sted_liste)
 
     #Leser inn avtaler fra avtale_fil og lager dictionary
     try:
@@ -304,7 +293,7 @@ def henter_sted(navn_dictionary,fil,sted_liste):
                 id = int(linje_liste[0])
                 navn_dictionary[id] = Sted(id, linje_liste[1], linje_liste[2])
                 sted_liste.append(id)
-        return navn_dictionary
+        return navn_dictionary,sted_liste
     except ZeroDivisionError:
         print("Fila: dokumentet er tom")
     except FileNotFoundError:

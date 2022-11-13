@@ -12,14 +12,16 @@ sted_liste = list()
 
 fil_hentet = False
 
+Af.henter_avtalebok(avtalebok_dict, avtale_fil,kategori_dict,kategori_fil,kategori_liste,sted_dict,sted_fil,sted_liste)
+
 valg = Af.menyvalg()
 while valg != 9:
     fil_hentet_status = fil_hentet
     if valg == 1:
-        Af.henter_avtalebok(avtalebok_dict,avtale_fil,kategori_dict,kategori_fil,sted_dict,sted_fil)
+        Af.henter_avtalebok(avtalebok_dict,avtale_fil,kategori_dict,kategori_fil,kategori_liste,sted_dict,sted_fil,sted_liste)
         fil_hentet = True
     elif valg == 2:
-        Af.ny_avtale(avtalebok_dict)
+        Af.ny_avtale(avtalebok_dict,sted_dict,sted_liste)
     elif valg == 3:
         Af.print_avtale(avtalebok_dict)
     elif valg == 4:
@@ -41,9 +43,6 @@ while valg != 9:
             print("Finner ikke en avtale med det navnet.")
     elif valg == 6:
         #avtale_fil = input("Skriv inn navnet på filen som avtalene skal lagres i #NB! husk .txt#: ")
-        if fil_hentet_status == False:
-            Af.henter_avtalebok(avtalebok_dict, avtale_fil, kategori_dict, kategori_fil, sted_dict, sted_fil)
-            fil_hentet = True
         Af.lagrer_dict(avtalebok_dict,avtale_fil,kategori_dict,kategori_fil,sted_dict,sted_fil)
     elif valg == 7:
         Af.ny_kategori(kategori_dict,kategori_liste)
