@@ -6,22 +6,25 @@ def ny_avtale(avtale_dict,sted_dict,sted_liste):
     #Bruker skriver inn avtaledeljer
     valgt_tittel = input("Skriv inn tittel: ")
 
-    #Lar brukeren skrive inn sted
-
     #Printer først eksisterende steder:
     s_liste = list()
     for x in sted_dict.keys():
         s_liste.append(int(x))
     print_dictonary(sted_dict,"Eksisterende steder:")
-    innskrevet_sted = int(input("Skriv inn id til ønsket sted eller legg til nytt sted ved å skrive et annet tall: "))
-    if innskrevet_sted in s_liste:
-        valgt_sted = innskrevet_sted
-    else:
-        ny_sted(sted_dict,sted_liste)
-        valgt_sted = sted_liste[-1]
-
-
-    #Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
+    while True:
+            try:
+                innskrevet_sted = int(input("Skriv inn id til ønsket sted eller legg til nytt sted ved å skrive et annet tall: "))
+                if innskrevet_sted in s_liste:
+                    valgt_sted = innskrevet_sted
+                    break
+                else:
+                    ny_sted(sted_dict,sted_liste)
+                    valgt_sted = sted_liste[-1]
+                    break
+            except ValueError:
+                print("Id må være heltall")
+                continue
+        #Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
     while True:
         try:
             valgt_starttidspunkt = datetime.strptime(input("Skriv inn starttidspunkt(DD-MM-ÅÅÅÅ TT:MM): "), "%d-%m-%Y %H:%M")

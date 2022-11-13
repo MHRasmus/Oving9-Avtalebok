@@ -2,7 +2,7 @@
 #Definerer klassen Avtalebok
 class Avtalebok:
     #Definerer variablene i klassen
-    def __init__(self,tittel="",sted="",starttidspunkt=0,varighet=0):
+    def __init__(self,tittel="",sted=0,starttidspunkt=0,varighet=0):
         self.tittel = tittel
         self.sted = sted
         self.starttidspunkt = starttidspunkt
@@ -12,10 +12,14 @@ class Avtalebok:
     # lager en liste med katergorier:
     def legg_til_kategori(self,kategori):
         return self.kategori.append(kategori)
-
+    #Returnerer sted objekt fra et gitt indeks
+    def steds_objekt(self,steds_dict,steds_liste):
+        sted_tall = self.sted
+        if sted_tall in steds_liste:
+            
 
     def __str__(self):
-        return f"\nTittel: {self.tittel}\nSted: {self.sted}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}\nKategori: {self.kategori}"
+        return f"\nTittel: {self.tittel}\nSted: {self.steds_objekt()}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}\nKategori: {self.kategori}"
     def __repr__(self):
         return f"\nTittel: {self.tittel},Sted: {self.sted},Starttidspunkt: {self.starttidspunkt},Varighet: {self.varighet}"
 
