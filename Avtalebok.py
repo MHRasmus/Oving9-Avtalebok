@@ -38,7 +38,7 @@ while valg != 9:
         try:
             rediger = input("\nSkriv inn navnet på avtalen du vil redigere: ")
             print(f"{avtalebok_dict[rediger]}\n")
-            Af.rediger_avtale(avtalebok_dict, rediger)
+            Af.rediger_avtale(avtalebok_dict, rediger,sted_dict,sted_liste,kategori_dict,kategori_liste)
         except KeyError:
             print("Finner ikke en avtale med det navnet.")
     elif valg == 6:
@@ -49,15 +49,14 @@ while valg != 9:
     elif valg == 8:
         Af.ny_sted(sted_dict,sted_liste)
     elif valg == 10:
-        Af.lagrer_kategorier(kategori_dict,kategori_fil)
+
+        Af.søk_etter_sted(avtalebok_dict,sted_dict)
+
     elif valg == 11:
-        Af.print_dictonary(kategori_dict)
+        Af.print_avtale(kategori_dict)
     elif valg == 12:
-        Af.lagrer_sted(sted_dict,sted_fil)
-    elif valg == 13:
-        Af.print_dictonary(sted_dict)
-    elif valg == 14:
-        Af.kategori_til_avtale(avtalebok_dict,kategori_dict,kategori_liste)
+        Af.print_avtale(sted_dict)
+
 
 
 

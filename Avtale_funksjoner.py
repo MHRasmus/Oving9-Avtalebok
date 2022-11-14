@@ -10,7 +10,7 @@ def ny_avtale(avtale_dict,sted_dict,sted_liste,kategori_dict,kategori_liste):
     s_liste = list()
     for x in sted_dict.keys():
         s_liste.append(int(x))
-    print_dictonary(sted_dict,"Eksisterende steder:")
+    print_avtale(sted_dict,"Eksisterende steder:")
     while True:
             try:
                 innskrevet_sted = int(input("Skriv inn id til ønsket sted eller legg til nytt sted ved å skrive et annet tall: "))
@@ -49,7 +49,7 @@ def ny_avtale(avtale_dict,sted_dict,sted_liste,kategori_dict,kategori_liste):
     intern_liste = list()
     for y in kategori_dict.keys():
         k_liste.append(int(y))
-    print_dictonary(kategori_dict, "Eksisterende kategorier")
+    print_avtale(kategori_dict, "Eksisterende kategorier")
 
     while True:
         try:
@@ -77,11 +77,27 @@ def ny_avtale(avtale_dict,sted_dict,sted_liste,kategori_dict,kategori_liste):
     # Printer ut avtalen som er blitt opprettet
     print(f"""{"-"*70}\nAvtalen din har blitt opprettet:{avtale_dict[valgt_tittel]}\n{"-"*70}""")
 
-
 # Funksjon for redigering av eksisterende avtaler
-def rediger_avtale(avtale_dict, valgt_tittel):
-    # Bruker skriver inn avtaledeljer
-    valgt_sted = str(input("Skriv inn sted: "))
+def rediger_avtale(avtale_dict, valgt_tittel,sted_dict,sted_liste,kategori_dict,kategori_liste):
+    #Printer ut eksisterende steder og lar bruker velge nytt sted:
+    s_liste = list()
+    for x in sted_dict.keys():
+        s_liste.append(int(x))
+    print_avtale(sted_dict, "Eksisterende steder:")
+    while True:
+        try:
+            innskrevet_sted = int(
+                input("Skriv inn id til ønsket sted eller legg til nytt sted ved å skrive et annet tall: "))
+            if innskrevet_sted in s_liste:
+                valgt_sted = innskrevet_sted
+                break
+            else:
+                ny_sted(sted_dict, sted_liste)
+                valgt_sted = sted_liste[-1]
+                break
+        except ValueError:
+            print("Id må være heltall")
+            continue
 
     # Sjekker om brukervalgt tidspunkt er i gyldig format (DD-MM-ÅÅÅÅ TT:MM)
     while True:
@@ -102,12 +118,35 @@ def rediger_avtale(avtale_dict, valgt_tittel):
             print("Feil format på varighet")
             continue
 
+    #Lar brukeren endre kategori:
+    k_liste = list()
+    intern_liste = list()
+    for y in kategori_dict.keys():
+        k_liste.append(int(y))
+    print_avtale(kategori_dict, "Eksisterende kategorier")
+    while True:
+        try:
+            innskrevet_kategori = int(input("Skriv inn Id på kategorien du vil legge til: "))
+            if innskrevet_kategori in k_liste:
+                intern_liste.append(innskrevet_kategori)
+            else:
+                ny_kategori(kategori_dict, kategori_liste)
+                intern_liste.append(kategori_liste[-1])
+            legg_til_ny = input("Vil du legge til en kategori til? [Y/N]: ")
+            if legg_til_ny in ["Y", "y"]:
+                continue
+            else:
+                valgt_kategori = str(intern_liste)[1:-1]
+                break
+
+        except ValueError:
+            print("Id på kategori må være et heltall")
+
     # Lager dictionary med valgte data
-    avtale_dict[valgt_tittel] = Avtalebok(valgt_tittel, valgt_sted, valgt_starttidspunkt, valgt_varighet)
+    avtale_dict[valgt_tittel] = Avtalebok(valgt_tittel,valgt_sted,valgt_starttidspunkt,valgt_varighet,valgt_kategori)
 
     # Printer ut avtalen som er blitt opprettet
     print(f"""{"-" * 70}\nAvtalen din har blitt redigert:{avtale_dict[valgt_tittel]}\n{"-" * 70}""")
-
 
 # Funksjon som skriver ut index med tilhørende avtale
 def print_avtale(avtale_dict, Overskrift="Valgt avtale",):
@@ -115,7 +154,6 @@ def print_avtale(avtale_dict, Overskrift="Valgt avtale",):
     for x in avtale_dict:
         print(f"""\n{Overskrift.upper()}\n***Index, "{x}"***{avtale_dict[x]}""")
     print(f"""\n{"-" * 70}""")
-
 
 # Funksjon som lagrer en dictionary som en tekstfil
 def lagrer_dict(navn_dictionary, fil, kategori_dict, kategori_fil, sted_dict, sted_fil):
@@ -129,11 +167,9 @@ def lagrer_dict(navn_dictionary, fil, kategori_dict, kategori_fil, sted_dict, st
         with open(fil, "w", encoding="UTF8") as fila:
             for nokkel in navn_dictionary:
                 avtale = navn_dictionary[nokkel]
-                fila.write(f"{avtale.tittel};{avtale.sted};{avtale.starttidspunkt};{avtale.varighet};{avtale.kategori}\n")
+                fila.write(f"{avtale.tittel};{avtale.sted};{avtale.starttidspunkt};{avtale.varighet};{avtale.kategori}")
     except:
         print("Feil har oppstått")
-
-
 
 # Funksjon som lager en dictonary fra en tekstfil
 #Laster først inn filene med kategorier og steder
@@ -155,6 +191,7 @@ def henter_avtalebok(navn_dictionary,fil,kategori_dictionary,kategori_fil,katego
                     avtale.sted = linje_liste[1]
                     avtale.starttidspunkt = datetime.fromisoformat(linje_liste[2])
                     avtale.varighet = int(linje_liste[3])
+                    avtale.kategori = linje_liste[4]
 
                 navn_dictionary[linje_liste[0]] = avtale
             
@@ -164,7 +201,6 @@ def henter_avtalebok(navn_dictionary,fil,kategori_dictionary,kategori_fil,katego
         print("Fant ikke dokumentet")
     except:
         print("Feil har oppstått")
-
 
 # Funksjon som finner avtaler på en gitt dato
 def avtale_dato(navn_dictionary,navn_returnert_dictionary,dato):
@@ -177,7 +213,6 @@ def avtale_dato(navn_dictionary,navn_returnert_dictionary,dato):
                 navn_returnert_dictionary[tittel] = avtale    
     return navn_returnert_dictionary
 
-
 # Funksjon som leter etter titler til avtaler i en gitt streng
 def avtale_sok(navn_dictionary,navn_returnert_dictionary, streng):
     for tittel in navn_dictionary:
@@ -188,7 +223,6 @@ def avtale_sok(navn_dictionary,navn_returnert_dictionary, streng):
             navn_returnert_dictionary[tittel] = avtale
     return navn_returnert_dictionary
 
-
 # Funksjon for menyvalg
 def menyvalg():
     while True:
@@ -198,17 +232,15 @@ def menyvalg():
                 f"\n3 = Skrive ut alle avtalene \n4 = Slett en avtale \n5 = Rediger en avtale "
                 f"\n6 = Lagre avtalene i en fil \n7 = Legge til ny kategori \n8 = Legge til nytt sted"
                 f"\n9 = Avslutte"
-                f"\n10 = Lagre kategorier \n11 = Skriv ut kategorier \n12 = Lagre steder \n13 = Skrive ut steder"
-                f"\n14 = Koble avtale og kategori  ")
+                f"\n10 = Søk avtaler etter sted \n11 = Skriv ut kategorier \n12 = Skrive ut steder")
             valg_bruker = int(input("Skriv inn tallet som stemmer overens med ønsket valg: "))
-            if valg_bruker in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ,13, 14]:
+            if valg_bruker in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]:
                 break
             else:
                 print("Dette tallet stemmer ikke overens med noen av valgene, velg på nytt.")
         except ValueError:
             print("Du må skrive inn et tall.")
     return valg_bruker
-
 
 def ny_kategori(kategori_dict,kategori_liste):
     # Bruker skriver inn kategorideljer
@@ -248,7 +280,6 @@ def lagrer_kategorier(navn_dictionary, fil):
     except:
         print("Feil har oppstått")
 
-
 # Funksjon som lager en dictonary fra en tekstfil med kategorier
 def henter_kategorier(navn_dictionary,fil,kategori_liste):
     try:
@@ -266,14 +297,12 @@ def henter_kategorier(navn_dictionary,fil,kategori_liste):
     except:
         print("Feil har oppstått")
 
-
 # Funksjon som skriver ut index med tilhørende verdi/klasse
 def print_dictonary(navn_dictionary, overskrift=""):
     print(f"""\n{"-" * 70}\n{overskrift}""")
     for x in navn_dictionary:
         print(f"""\n*** Index: {x} ***{navn_dictionary[x]}""")
     print(f"""\n{"-" * 70}""")
-
 
 # Funksjon som leser inn nytt sted fra bruker
 def ny_sted(sted_dict,sted_liste):
@@ -318,7 +347,6 @@ def lagrer_sted(navn_dictionary, fil):
     except:
         print("Feil har oppstått")
 
-
 # Funksjon som lager en dictonary fra en tekstfil med steder
 def henter_sted(navn_dictionary,fil,sted_liste):
     try:
@@ -336,5 +364,9 @@ def henter_sted(navn_dictionary,fil,sted_liste):
     except:
         print("Feil har oppstått")
 
+
+def søk_etter_sted(avtale_dict,sted_dict):
+    for x in avtale_dict:
+        linje = avtale_dict[x]
 
 
