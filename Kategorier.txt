@@ -2,3 +2,4 @@
 4;Eksamen;Viktig
 2;Øvingstime;Vanlig
 3;Fack off;Svært viktig
+666;Helvete;Viktig

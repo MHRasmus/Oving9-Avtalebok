@@ -2,7 +2,7 @@
 #Definerer klassen Avtalebok
 class Avtalebok:
     #Definerer variablene i klassen
-    def __init__(self,tittel="",sted=list(),starttidspunkt=0,varighet=0,kategori=list()):
+    def __init__(self,tittel="",sted=list(),starttidspunkt=0,varighet=0,kategori=""):
         self.tittel = tittel
         self.sted = sted
         self.starttidspunkt = starttidspunkt
@@ -16,7 +16,7 @@ class Avtalebok:
         return self.kategori.append(kategori)
 
     def __str__(self):
-        return f"\nTittel: {self.tittel}\nSted: {self.sted}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}\nKategori: {self.kategori}"
+        return f"\nTittel: {self.tittel}\nSted: {self.sted}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}\nKategori: {str(self.kategori)}"
     def __repr__(self):
         return f"\nTittel: {self.tittel},Sted: {self.sted},Starttidspunkt: {self.starttidspunkt},Varighet: {self.varighet}"
 

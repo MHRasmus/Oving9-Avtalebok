@@ -21,7 +21,7 @@ while valg != 9:
         Af.henter_avtalebok(avtalebok_dict,avtale_fil,kategori_dict,kategori_fil,kategori_liste,sted_dict,sted_fil,sted_liste)
         fil_hentet = True
     elif valg == 2:
-        Af.ny_avtale(avtalebok_dict,sted_dict,sted_liste)
+        Af.ny_avtale(avtalebok_dict,sted_dict,sted_liste,kategori_dict,kategori_liste)
     elif valg == 3:
         Af.print_avtale(avtalebok_dict)
     elif valg == 4:

@@ -2,7 +2,7 @@ from Avtale_klasse import *
 from datetime import datetime
 
 
-def ny_avtale(avtale_dict,sted_dict,sted_liste):
+def ny_avtale(avtale_dict,sted_dict,sted_liste,kategori_dict,kategori_liste):
     #Bruker skriver inn avtaledeljer
     valgt_tittel = input("Skriv inn tittel: ")
 
@@ -43,8 +43,36 @@ def ny_avtale(avtale_dict,sted_dict,sted_liste):
             print("Feil format på varighet, skriv i hele minutter")
             continue
 
+    #Lar brukeren legge til eksisterende eller ny kategori
+    #Printer først eksisterende avtaler
+    k_liste = list()
+    intern_liste = list()
+    for y in kategori_dict.keys():
+        k_liste.append(int(y))
+    print_dictonary(kategori_dict, "Eksisterende kategorier")
+
+    while True:
+        try:
+            innskrevet_kategori = int(input("Skriv inn Id på kategorien du vil legge til: "))
+            if innskrevet_kategori in k_liste:
+                intern_liste.append(innskrevet_kategori)
+            else:
+                ny_kategori(kategori_dict,kategori_liste)
+                intern_liste.append(kategori_liste[-1])
+            legg_til_ny = input("Vil du legge til en kategori til? [Y/N]: ")
+            if legg_til_ny in ["Y", "y"]:
+                continue
+            else:
+                valgt_kategori = str(intern_liste)[1:-1]
+                break
+
+        except ValueError:
+            print("Id på kategori må være et heltall")
+
+
+
     #Lager dictionary med valgte data
-    avtale_dict[valgt_tittel] = Avtalebok(valgt_tittel,valgt_sted,valgt_starttidspunkt,valgt_varighet)
+    avtale_dict[valgt_tittel] = Avtalebok(valgt_tittel,valgt_sted,valgt_starttidspunkt,valgt_varighet,valgt_kategori)
 
     # Printer ut avtalen som er blitt opprettet
     print(f"""{"-"*70}\nAvtalen din har blitt opprettet:{avtale_dict[valgt_tittel]}\n{"-"*70}""")
@@ -101,7 +129,7 @@ def lagrer_dict(navn_dictionary, fil, kategori_dict, kategori_fil, sted_dict, st
         with open(fil, "w", encoding="UTF8") as fila:
             for nokkel in navn_dictionary:
                 avtale = navn_dictionary[nokkel]
-                fila.write(f"{avtale.tittel};{avtale.sted};{avtale.starttidspunkt};{avtale.varighet}")
+                fila.write(f"{avtale.tittel};{avtale.sted};{avtale.starttidspunkt};{avtale.varighet};{avtale.kategori}\n")
     except:
         print("Feil har oppstått")
 
@@ -307,36 +335,6 @@ def henter_sted(navn_dictionary,fil,sted_liste):
         print("Fant ikke dokumentet")
     except:
         print("Feil har oppstått")
-
-#Lar brukeren koblen en avtale med en eller flere kategorier
-def kategori_til_avtale(avtale_dict,kategori_dict,kategori_liste):
-    #Printer først eksisterende avtaler
-    a_liste = list()
-    for x in avtale_dict.keys():
-        a_liste.append((x))
-    print_dictonary(avtale_dict, "Eksisterende avtaler:")
-    while True:
-        try:
-            innskrevet_avtale = input("Skriv inn navn på avtalen du vil legge en kategori til: ")
-            if innskrevet_avtale in a_liste:
-                k_liste = list()
-                for y in kategori_dict.keys():
-                    k_liste.append(int(y))
-                print_dictonary(kategori_dict, "Eksisterende kategorier")
-                innskrevet_kategori = int(input("Skriv inn Id på kategorien du vil legge til: "))
-                liste = list()
-                if innskrevet_kategori in k_liste:
-                    liste.append(innskrevet_kategori)
-                    kategori_dict[innskrevet_avtale].append(liste)
-                    print_avtale(avtale_dict)
-                    break
-            else:
-                print("Finner ikke avtalen")
-                continue
-
-        except ValueError:
-            print("Finner ikke avtalen")
-            continue
 
 
 
