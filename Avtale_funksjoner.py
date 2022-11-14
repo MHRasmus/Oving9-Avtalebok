@@ -365,8 +365,31 @@ def henter_sted(navn_dictionary,fil,sted_liste):
         print("Feil har oppstått")
 
 
-def søk_etter_sted(avtale_dict,sted_dict):
-    for x in avtale_dict:
-        linje = avtale_dict[x]
+def søk_etter_sted(resultat_dict,avtale_fil,sted_dict):
+    sted_avtalebok = dict()
+    sted_avtalebok_navn = list()
+    try:
+        with open(avtale_fil,"r",encoding="UTF8") as fila:
+            for linje in fila:
+                linje_liste = linje.strip().split(";")
+                if linje_liste[1] not in sted_avtalebok:
+                    sted_avtalebok[linje_liste[1]] = linje_liste[0]
+                elif type(sted_avtalebok[linje_liste[1]]) == list:
+                    sted_avtalebok[linje_liste[1]].append(linje_liste[0])
+                else:
+                    sted_avtalebok[linje_liste[1]] = [sted_avtalebok[linje_liste[1]], linje_liste[0]]
 
 
+
+
+
+
+    except ZeroDivisionError:
+        print("Fila: dokumentet er tom")
+    except FileNotFoundError:
+        print("Fant ikke dokumentet")
+    except:
+        print("Feil har oppstått")
+
+    print(sted_avtalebok)
+    print(sted_avtalebok_navn)

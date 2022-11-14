@@ -49,8 +49,8 @@ while valg != 9:
     elif valg == 8:
         Af.ny_sted(sted_dict,sted_liste)
     elif valg == 10:
-
-        Af.søk_etter_sted(avtalebok_dict,sted_dict)
+        Af.lagrer_dict(avtalebok_dict, avtale_fil, kategori_dict, kategori_fil, sted_dict, sted_fil)
+        Af.søk_etter_sted(avtalebok_dict,avtale_fil,sted_dict)
 
     elif valg == 11:
         Af.print_avtale(kategori_dict)
