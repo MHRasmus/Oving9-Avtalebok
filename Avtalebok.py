@@ -48,7 +48,6 @@ while valg != 9:
         Af.ny_kategori(kategori_dict,kategori_liste)
     elif valg == 8:
         Af.ny_sted(sted_dict,sted_liste)
-
     elif valg == 10:
         Af.lagrer_kategorier(kategori_dict,kategori_fil)
     elif valg == 11:
@@ -57,6 +56,8 @@ while valg != 9:
         Af.lagrer_sted(sted_dict,sted_fil)
     elif valg == 13:
         Af.print_dictonary(sted_dict)
+    elif valg == 14:
+        Af.kategori_til_avtale(avtalebok_dict,kategori_dict,kategori_liste)
 
 
 

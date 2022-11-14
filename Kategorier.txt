@@ -1,1 +1,4 @@
 1;Forelesning;Viktig
+4;Eksamen;Viktig
+2;Øvingstime;Vanlig
+3;Fack off;Svært viktig

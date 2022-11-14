@@ -24,7 +24,8 @@ def ny_avtale(avtale_dict,sted_dict,sted_liste):
             except ValueError:
                 print("Id må være heltall")
                 continue
-        #Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
+
+    #Sjekker om brukervalgt tidspunkt er i gyldig format (ÅÅÅÅ-MM-DD TT:MM)
     while True:
         try:
             valgt_starttidspunkt = datetime.strptime(input("Skriv inn starttidspunkt(DD-MM-ÅÅÅÅ TT:MM): "), "%d-%m-%Y %H:%M")
@@ -126,6 +127,7 @@ def henter_avtalebok(navn_dictionary,fil,kategori_dictionary,kategori_fil,katego
                     avtale.sted = linje_liste[1]
                     avtale.starttidspunkt = datetime.fromisoformat(linje_liste[2])
                     avtale.varighet = int(linje_liste[3])
+
                 navn_dictionary[linje_liste[0]] = avtale
             
     except ZeroDivisionError:
@@ -168,9 +170,10 @@ def menyvalg():
                 f"\n3 = Skrive ut alle avtalene \n4 = Slett en avtale \n5 = Rediger en avtale "
                 f"\n6 = Lagre avtalene i en fil \n7 = Legge til ny kategori \n8 = Legge til nytt sted"
                 f"\n9 = Avslutte"
-                f"\n10 = Lagre kategorier \n11 = Skriv ut kategorier \n12 = Lagre steder \n13 = Skrive ut steder  ")
+                f"\n10 = Lagre kategorier \n11 = Skriv ut kategorier \n12 = Lagre steder \n13 = Skrive ut steder"
+                f"\n14 = Koble avtale og kategori  ")
             valg_bruker = int(input("Skriv inn tallet som stemmer overens med ønsket valg: "))
-            if valg_bruker in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ,13]:
+            if valg_bruker in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ,13, 14]:
                 break
             else:
                 print("Dette tallet stemmer ikke overens med noen av valgene, velg på nytt.")
@@ -304,5 +307,36 @@ def henter_sted(navn_dictionary,fil,sted_liste):
         print("Fant ikke dokumentet")
     except:
         print("Feil har oppstått")
+
+#Lar brukeren koblen en avtale med en eller flere kategorier
+def kategori_til_avtale(avtale_dict,kategori_dict,kategori_liste):
+    #Printer først eksisterende avtaler
+    a_liste = list()
+    for x in avtale_dict.keys():
+        a_liste.append((x))
+    print_dictonary(avtale_dict, "Eksisterende avtaler:")
+    while True:
+        try:
+            innskrevet_avtale = input("Skriv inn navn på avtalen du vil legge en kategori til: ")
+            if innskrevet_avtale in a_liste:
+                k_liste = list()
+                for y in kategori_dict.keys():
+                    k_liste.append(int(y))
+                print_dictonary(kategori_dict, "Eksisterende kategorier")
+                innskrevet_kategori = int(input("Skriv inn Id på kategorien du vil legge til: "))
+                liste = list()
+                if innskrevet_kategori in k_liste:
+                    liste.append(innskrevet_kategori)
+                    kategori_dict[innskrevet_avtale].append(liste)
+                    print_avtale(avtale_dict)
+                    break
+            else:
+                print("Finner ikke avtalen")
+                continue
+
+        except ValueError:
+            print("Finner ikke avtalen")
+            continue
+
 
 
