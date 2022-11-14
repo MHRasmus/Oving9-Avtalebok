@@ -367,20 +367,34 @@ def henter_sted(navn_dictionary,fil,sted_liste):
 
 def søk_etter_sted(avtalebok_dict,avtale_fil,søkeord):
     sted_avtalebok = dict()
+    resultat_dict = dict()
+    flere_keys = list()
     try:
         with open(avtale_fil,"r",encoding="UTF8") as fila:
             for linje in fila:
                 linje_liste = linje.strip().split(";")
                 if linje_liste[1] not in sted_avtalebok:
                     sted_avtalebok[linje_liste[1]] = linje_liste[0]
+
                 elif type(sted_avtalebok[linje_liste[1]]) == list:
                     sted_avtalebok[linje_liste[1]].append(linje_liste[0])
+
                 else:
                     sted_avtalebok[linje_liste[1]] = [sted_avtalebok[linje_liste[1]], linje_liste[0]]
-        if søkeord in sted_avtalebok.keys():
-            resultat = sted_avtalebok[søkeord]
-        else:
-            print("Ingen avtaler har dette stedet")
+                    flere_keys.append(linje_liste[1])
+            if søkeord in sted_avtalebok.keys():
+                resultat_dict = sted_avtalebok[søkeord]
+                print(f"Disse avtalene har steds-id: {søkeord}")
+                print(f"""\n{"-" * 70}""")
+                if søkeord in flere_keys:
+                    for x in resultat_dict:
+                        print(avtalebok_dict[x])
+                else:
+                    print(avtalebok_dict[str(resultat_dict)])
+                print(f"""\n{"-" * 70}""")
+            else:
+                print("***Ingen avtaler har dette stedet***")
+
     except ZeroDivisionError:
         print("Fila: dokumentet er tom")
     except FileNotFoundError:
@@ -388,8 +402,4 @@ def søk_etter_sted(avtalebok_dict,avtale_fil,søkeord):
     except:
         print("Feil har oppstått")
 
-    #Printer alle avtalene som har valgte sted:
-    print(f"Disse avtalene har steds-id:{søkeord}")
-    for x in resultat:
-        print(avtalebok_dict[x])
 

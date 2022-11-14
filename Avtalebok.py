@@ -52,7 +52,7 @@ while valg != 9:
         Af.lagrer_dict(avtalebok_dict, avtale_fil, kategori_dict, kategori_fil, sted_dict, sted_fil)
         # Printer alle lagrete steder:
         Af.print_dictonary(sted_dict, "Eksisterende steder")
-        søkeord = input("Skriv inn id-en på stedet du vil finne tilhørende avtaler til: ")
+        søkeord = str(input("Skriv inn id-en på stedet du vil finne tilhørende avtaler til: "))
         Af.søk_etter_sted(avtalebok_dict,avtale_fil,søkeord)
 
     elif valg == 11:

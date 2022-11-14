@@ -9,12 +9,6 @@ class Avtalebok:
         self.varighet = varighet
         self.kategori = kategori
 
-
-
-    # lager en liste med katergorier:
-    def legg_til_kategori(self,kategori):
-        return self.kategori.append(kategori)
-
     def __str__(self):
         return f"\nTittel: {self.tittel}\nSted: {self.sted}\nStarttidspunkt: {self.starttidspunkt}\nVarighet: {self.varighet}\nKategori: {str(self.kategori)}"
     def __repr__(self):
