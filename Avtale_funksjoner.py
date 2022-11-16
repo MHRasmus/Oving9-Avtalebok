@@ -255,13 +255,18 @@ def avtale_sok(navn_dictionary, navn_returnert_dictionary, streng):
 # Funksjon som søker etter avtaler som fåregår på et bestemt sted
 def søk_etter_sted(avtalebok_dict, søkeord):
     avtale_list = list()
+    ingen_steder = 0
     for a in avtalebok_dict:
         avtale = avtalebok_dict[a]
         sted = int(avtale.sted.id)
         if sted == søkeord:
             avtale_list.append(avtale)
-    return avtale_list
+        else:
+            ingen_steder +=1
+    if ingen_steder>0:
+        print("Ingen avtaler har dette stedet")
 
+    return avtale_list
 
 # Funksjon for menyvalg
 def menyvalg():
@@ -295,12 +300,15 @@ def print_dictonary(navn_dictionary, overskrift=""):
 def legg_til_extra_kategori(avtalebok_dict, kategori_dict):
     print_dictonary(avtalebok_dict, "Avtaler")
     innskrevet_avtale = input("\nSkriv inn navnet på avtalen du vil legge til en kategori i: ")
-    print(f"{avtalebok_dict[innskrevet_avtale]}\n")
-    print_dictonary(kategori_dict, "Kategorier")
-    innskrevet_kategori = int(input("Skriv inn Id på kategorien du vil legge til: "))
-    if innskrevet_kategori in kategori_dict:
-        valgt_kategori = kategori_dict[innskrevet_kategori]
+    if innskrevet_avtale in avtalebok_dict.keys():
+        print(f"{avtalebok_dict[innskrevet_avtale]}\n")
+        print_dictonary(kategori_dict, "Kategorier")
+        innskrevet_kategori = int(input("Skriv inn Id på kategorien du vil legge til: "))
+        if innskrevet_kategori in kategori_dict:
+            valgt_kategori = kategori_dict[innskrevet_kategori]
+        else:
+            valgt_kategori = ny_kategori(kategori_dict)
+        avtalebok_dict[innskrevet_avtale].legg_til_kategori(valgt_kategori)
+        print(f"{avtalebok_dict[innskrevet_avtale]}\n")
     else:
-        valgt_kategori = ny_kategori(kategori_dict)
-    avtalebok_dict[innskrevet_avtale].legg_til_kategori(valgt_kategori)
-    print(f"{avtalebok_dict[innskrevet_avtale]}\n")
+        print("Finnes ingen avtaler med dette navnet")

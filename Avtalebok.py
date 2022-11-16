@@ -16,12 +16,10 @@ sted_dict = dict()
 
 valg = Af.menyvalg()
 while valg != 13:
-    #fil_hentet_status = fil_hentet
     if valg == 1:
         Af.henter_avtalebok(avtalebok_dict, avtale_fil)
         Af.henter_kategorier(kategori_dict, kategori_fil)
         Af.henter_sted(sted_dict, sted_fil)
-        #fil_hentet = True
     elif valg == 2:
         Af.ny_avtale(avtalebok_dict, sted_dict, kategori_dict)
     elif valg == 3:
@@ -53,8 +51,6 @@ while valg != 13:
             Af.legg_til_extra_kategori(avtalebok_dict, kategori_dict)
         except ValueError:
             print("Id på kategori må være et heltall")
-        #except KeyError:
-            #print("Finner ikke en avtale med det navnet.")
     elif valg == 9:
         Af.print_dictonary(sted_dict, "Lagrede steder:")
         Af.ny_sted(sted_dict)
