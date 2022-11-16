@@ -1,5 +1,3 @@
-1;Forelesning;Viktig
-4;Eksamen;Viktig
-2;Øvingstime;Vanlig
-3;Fack off;Svært viktig
-666;Helvete;Viktig
+1,Test kategori 1,Vanlig: 
+2,Test kategori 2,Vanlig: 
+3,Test kategori 3,Vanlig: 
